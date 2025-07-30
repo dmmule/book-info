@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="98c3ca48-2452-4678-8990-a38e6f1733a5" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="f370ce5b-198c-43f0-b1b0-329fdd323019">
+		<http:request-connection host="0.0.0.0" port="8081" >
+		</http:request-connection>
+	</http:request-config>
+	<flow name="book-info-apiFlow" doc:id="ae35299e-cd48-41f3-810e-a3e593f07335" >
+		<http:listener doc:name="Listener" doc:id="07d1bcad-f111-4d6c-a798-f036bfe36673" path="/book" config-ref="HTTP_Listener_config"/>
+		<logger level="INFO" doc:name="start Logger" doc:id="153c99e9-51c3-42a3-b71e-5475359ce44b" message="calling API"/>
+		<ee:transform doc:name="Transform Message" doc:id="2a9d6906-173c-4e12-b190-af867091f4bb" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+  isbn: "978-1491950357",
+  title: "Learning MuleSoft",
+  author: "Deepika R.",
+  genre: "Technology",
+  rating: 4.8
+}
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="end Logger" doc:id="8cd22852-1e8a-4723-8492-b3176752d50b" message="api is called successfully"/>
+	</flow>
+	<flow name="book-info-apiFlow2" doc:id="8e9091c9-6ead-4bd6-a858-c7d05c8af383" >
+		<http:listener doc:name="Listener" doc:id="b7cb9ba5-3d4e-4678-82c5-39ed7a2c5898" config-ref="HTTP_Listener_config" path="/book/addbook" allowedMethods="POST"/>
+		<ee:transform doc:name="Transform Message" doc:id="8faf1d86-0dc5-4201-abdd-a83e4b5e5ac9" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+  message: "Book added successfully",
+  book: payload
+}
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="book-info-apiFlow3" doc:id="f2711fe7-ef4c-456c-89ac-fedd9f6ec303" >
+		<http:listener doc:name="Listener" doc:id="78658fac-65f9-44d4-9b82-1525d98c54c0" config-ref="HTTP_Listener_config" path="/books"/>
+		<ee:transform doc:name="Transform Message" doc:id="25f83644-ea18-4db4-8e24-595aeee4ad1f" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+[
+  {
+    isbn: "978-1491950357",
+    title: "Learning MuleSoft",
+    author: "Deepika R.",
+    genre: "Technology",
+    rating: 4.8
+  },
+  {
+    isbn: "978-0134685991",
+    title: "Effective Java",
+    author: "Joshua Bloch",
+    genre: "Programming",
+    rating: 4.9
+  }
+]
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="book-info-apiFlow1" doc:id="81269694-5c78-40dc-ad47-242132734a93" >
+		<http:listener doc:name="Listener" doc:id="f631765b-d019-41da-854e-ce6ea6efdc4e" config-ref="HTTP_Listener_config" path="/book" allowedMethods="GET"/>
+		<ee:transform doc:name="Transform Message" doc:id="ab8b3129-a9fd-4201-9ead-78f4f0660bce" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+var isbnParam = attributes.queryParams.isbn
+---
+if (isbnParam == "978-1491950357")
+  {
+    isbn: isbnParam,
+    title: "Learning MuleSoft",
+    author: "Deepika R.",
+    genre: "Technology",
+    rating: 4.8
+  }
+else 
+  {
+    message: "Book not found for ISBN: " ++ "isbnParam"
+  }
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
