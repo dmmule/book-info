@@ -23,7 +23,7 @@ output application/json
 {
   isbn: "978-1491950357",
   title: "Learning MuleSoft",
-  author: "Deepika R.",
+  author: "Deepika .",
   genre: "Technology",
   rating: 4.8
 }
@@ -82,7 +82,7 @@ output application/json
 output application/json
 var isbnParam = attributes.queryParams.isbn
 ---
-if (isbnParam == "978-1491950357")
+if (isbnParam == "978-1491950359")
   {
     isbn: isbnParam,
     title: "Learning MuleSoft",
