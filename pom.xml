@@ -36,7 +36,7 @@
 				<environment>Sandbox</environment>
 				<workers>1</workers>
 				<workerType>Micro</workerType>
-				<applicationName>book-info-api</applicationName>
+				<applicationName>bookinfoapi</applicationName>
 				<muleVersion>4.9.7</muleVersion>
 				</cloudHubDeployment>
 				</configuration>
@@ -95,5 +95,33 @@
 			</snapshots>
 		</pluginRepository>
 	</pluginRepositories>
+<profiles>
+  <profile>
+    <id>exchange-deploy</id>
+    <activation>
+      <property>
+        <name>deployToExchange</name>
+      </property>
+    </activation>
+    <build>
+      <plugins>
+        <plugin>
+          <groupId>org.mule.tools.maven</groupId>
+          <artifactId>mule-maven-plugin</artifactId>
+          <version>${mule.maven.plugin.version}</version>
+          <executions>
+            <execution>
+              <id>exchange-predeploy</id>
+              <goals>
+                <goal>exchange-package</goal>
+                <goal>exchange-deploy</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+      </plugins>
+    </build>
+  </profile>
+</profiles>
 
 </project>
