@@ -68,6 +68,13 @@ output application/json
     author: "Joshua Bloch",
     genre: "Programming",
     rating: 4.9
+  },
+   {
+    isbn: "978-0134685791",
+    title: "Deep Java",
+    author: "Joshua Bloch",
+    genre: "Programming",
+    rating: 4.9
   }
 ]
 ]]></ee:set-payload>
