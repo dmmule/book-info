@@ -31,13 +31,15 @@
 				<extensions>true</extensions>
 				<configuration>
 				<cloudHubDeployment>
+				<uri>https://anypoint.mulesoft.com</uri>
 				<username>dmmule</username>
 				<password>dm98102WA!</password>
 				<environment>Sandbox</environment>
 				<workers>1</workers>
-				<workerType>Micro</workerType>
+				<workerType>MICRO</workerType>
 				<applicationName>bookinfoapi</applicationName>
-				<muleVersion>4.9.7</muleVersion>
+				<muleVersion>4.9.0</muleVersion>
+				<region>us-east-1</region>
 				</cloudHubDeployment>
 				</configuration>
 			</plugin>
@@ -95,33 +97,6 @@
 			</snapshots>
 		</pluginRepository>
 	</pluginRepositories>
-<profiles>
-  <profile>
-    <id>exchange-deploy</id>
-    <activation>
-      <property>
-        <name>deployToExchange</name>
-      </property>
-    </activation>
-    <build>
-      <plugins>
-        <plugin>
-          <groupId>org.mule.tools.maven</groupId>
-          <artifactId>mule-maven-plugin</artifactId>
-          <version>${mule.maven.plugin.version}</version>
-          <executions>
-            <execution>
-              <id>exchange-predeploy</id>
-              <goals>
-                <goal>exchange-package</goal>
-                <goal>exchange-deploy</goal>
-              </goals>
-            </execution>
-          </executions>
-        </plugin>
-      </plugins>
-    </build>
-  </profile>
-</profiles>
+
 
 </project>
